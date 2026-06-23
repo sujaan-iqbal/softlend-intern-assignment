@@ -3,7 +3,7 @@ from typing import Optional, List
 from datetime import datetime
 import re
 
-class CustomerCreate(BaseModel):
+class Create_Customer(BaseModel):
     name: str
     mobile: str
     pan: str
@@ -20,15 +20,15 @@ class CustomerCreate(BaseModel):
             raise ValueError('PAN format invalid')
         return v
 
-class CustomerResponse(BaseModel):
+class Customer_Response(BaseModel):
     id: int
     name: str
     mobile: str
 
-class CreditScoreUpdate(BaseModel):
+class Update_Credit_Score(BaseModel):
     cibil_score: int
 
-class CreditGapCreate(BaseModel):
+class Create_Credit_Gap(BaseModel):
     factor: str
     current_value: str
     ideal_value: str
@@ -36,14 +36,14 @@ class CreditGapCreate(BaseModel):
     estimated_score_gain: int
     action_description: str
 
-class OfferCreate(BaseModel):
+class Offer_Create(BaseModel):
     lender: str
     amount: float
     interest_rate: float
     tenure_months: int
     min_score_required: int = 650
 
-class OfferResponse(BaseModel):
+class Offer_Response_Data(BaseModel):
     id: int
     lender: str
     amount: float
