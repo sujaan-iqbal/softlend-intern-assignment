@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "softlend-api-complete",
+		"name": "Softlend API - Complete",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create Customer (Success)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Ravi Kumar\", \"mobile\": \"9876543210\", \"pan\": \"ABCDE1234F\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers", "host": ["{{base_url}}"], "path": ["customers"]}
+			}
+		},
+		{
+			"name": "2. Create Customer (Failure - Duplicate Mobile)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Ravi Kumar\", \"mobile\": \"9876543210\", \"pan\": \"ABCDE1234F\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers", "host": ["{{base_url}}"], "path": ["customers"]}
+			}
+		},
+		{
+			"name": "3. Update Credit Score (Success)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cibil_score\": 620}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/1/credit-score", "host": ["{{base_url}}"], "path": ["customers", "1", "credit-score"]}
+			}
+		},
+		{
+			"name": "4. Add Credit Gap (Success)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"factor\": \"Credit Utilisation\", \"current_value\": \"87%\", \"ideal_value\": \"below 30%\", \"impact\": \"high\", \"estimated_score_gain\": 35, \"action_description\": \"Pay down your HDFC credit card\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/1/credit-gaps", "host": ["{{base_url}}"], "path": ["customers", "1", "credit-gaps"]}
+			}
+		},
+		{
+			"name": "5. Resolve Gap (Success)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {"raw": "{{base_url}}/credit-gaps/1/resolve", "host": ["{{base_url}}"], "path": ["credit-gaps", "1", "resolve"]}
+			}
+		},
+		{
+			"name": "6. Get Credit Profile (Success)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/1/credit-profile", "host": ["{{base_url}}"], "path": ["customers", "1", "credit-profile"]}
+			}
+		},
+		{
+			"name": "7. Create Offer (Success)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"lender\": \"HDFC Bank\", \"amount\": 500000, \"interest_rate\": 10.5, \"tenure_months\": 36, \"min_score_required\": 700}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/1/offers", "host": ["{{base_url}}"], "path": ["customers", "1", "offers"]}
+			}
+		},
+		{
+			"name": "8. List Offers (Success)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/1/offers", "host": ["{{base_url}}"], "path": ["customers", "1", "offers"]}
+			}
+		},
+		{
+			"name": "9. Calculate EMI (Success)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/offers/1/emi", "host": ["{{base_url}}"], "path": ["offers", "1", "emi"]}
+			}
+		},
+		{
+			"name": "10. Update Offer Status (Success)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\": \"active\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/offers/1/status", "host": ["{{base_url}}"], "path": ["offers", "1", "status"]}
+			}
+		},
+		{
+			"name": "11. Update Offer Status (Failure - Locked)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\": \"active\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/offers/1/status", "host": ["{{base_url}}"], "path": ["offers", "1", "status"]}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		}
+	]
+}
