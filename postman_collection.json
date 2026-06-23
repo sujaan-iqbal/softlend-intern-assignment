@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "softlend-api-complete",
-		"name": "Softlend API - Complete",
+		"_postman_id": "softlend-api-bible",
+		"name": "Softlend API - Complete (Success & Failure)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -45,7 +45,20 @@
 			}
 		},
 		{
-			"name": "4. Add Credit Gap (Success)",
+			"name": "4. Update Credit Score (Failure - Customer Not Found)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cibil_score\": 620}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/999/credit-score", "host": ["{{base_url}}"], "path": ["customers", "999", "credit-score"]}
+			}
+		},
+		{
+			"name": "5. Add Credit Gap (Success)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -58,7 +71,20 @@
 			}
 		},
 		{
-			"name": "5. Resolve Gap (Success)",
+			"name": "6. Add Credit Gap (Failure - Customer Not Found)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"factor\": \"Credit Utilisation\", \"current_value\": \"87%\", \"ideal_value\": \"below 30%\", \"impact\": \"high\", \"estimated_score_gain\": 35, \"action_description\": \"Pay down your HDFC credit card\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/999/credit-gaps", "host": ["{{base_url}}"], "path": ["customers", "999", "credit-gaps"]}
+			}
+		},
+		{
+			"name": "7. Resolve Gap (Success)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -66,7 +92,15 @@
 			}
 		},
 		{
-			"name": "6. Get Credit Profile (Success)",
+			"name": "8. Resolve Gap (Failure - Gap Not Found)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {"raw": "{{base_url}}/credit-gaps/999/resolve", "host": ["{{base_url}}"], "path": ["credit-gaps", "999", "resolve"]}
+			}
+		},
+		{
+			"name": "9. Get Credit Profile (Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -74,7 +108,15 @@
 			}
 		},
 		{
-			"name": "7. Create Offer (Success)",
+			"name": "10. Get Credit Profile (Failure - Customer Not Found)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/999/credit-profile", "host": ["{{base_url}}"], "path": ["customers", "999", "credit-profile"]}
+			}
+		},
+		{
+			"name": "11. Create Offer (Success)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -87,7 +129,20 @@
 			}
 		},
 		{
-			"name": "8. List Offers (Success)",
+			"name": "12. Create Offer (Failure - Customer Not Found)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"lender\": \"HDFC Bank\", \"amount\": 500000, \"interest_rate\": 10.5, \"tenure_months\": 36, \"min_score_required\": 700}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/999/offers", "host": ["{{base_url}}"], "path": ["customers", "999", "offers"]}
+			}
+		},
+		{
+			"name": "13. List Offers (Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -95,7 +150,15 @@
 			}
 		},
 		{
-			"name": "9. Calculate EMI (Success)",
+			"name": "14. List Offers (Failure - Customer Not Found)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/999/offers", "host": ["{{base_url}}"], "path": ["customers", "999", "offers"]}
+			}
+		},
+		{
+			"name": "15. Calculate EMI (Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -103,7 +166,28 @@
 			}
 		},
 		{
-			"name": "10. Update Offer Status (Success)",
+			"name": "16. Calculate EMI (Failure - Offer Not Found)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/offers/999/emi", "host": ["{{base_url}}"], "path": ["offers", "999", "emi"]}
+			}
+		},
+		{
+			"name": "17. Update Offer Status (Success - Bajaj)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\": \"active\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/offers/2/status", "host": ["{{base_url}}"], "path": ["offers", "2", "status"]}
+			}
+		},
+		{
+			"name": "18. Update Offer Status (Failure - Locked HDFC)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -116,16 +200,24 @@
 			}
 		},
 		{
-			"name": "11. Update Offer Status (Failure - Locked)",
+			"name": "19. Update Offer Status (Failure - Invalid Transition)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"status\": \"active\"}",
+					"raw": "{\"status\": \"disbursed\"}",
 					"options": {"raw": {"language": "json"}}
 				},
-				"url": {"raw": "{{base_url}}/offers/1/status", "host": ["{{base_url}}"], "path": ["offers", "1", "status"]}
+				"url": {"raw": "{{base_url}}/offers/2/status", "host": ["{{base_url}}"], "path": ["offers", "2", "status"]}
+			}
+		},
+		{
+			"name": "20. Get Improvement Summary (Bonus - Success)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/1/improvement-summary", "host": ["{{base_url}}"], "path": ["customers", "1", "improvement-summary"]}
 			}
 		}
 	],
