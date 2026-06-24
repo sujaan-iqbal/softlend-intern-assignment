@@ -2,11 +2,10 @@
 
 ## Setup Instructions
 1. Navigate to the `backend/` folder.
-2. Create a virtual environment: `python -m venv venv`
-3. Activate it: `source venv/bin/activate` (or `venv\Scripts\activate` on Windows)
-4. Install dependencies: `pip install -r requirements.txt`
-5. Run the migration: `python run_migration.py`
-6. Start the server: `uvicorn main:app --reload`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the migration: `python run_migration.py` to get softlend.db
+4. Start the server: `uvicorn main:app --reload`
+
 
 ## How to use
 The API will be available at `http://127.0.0.1:8000`.
