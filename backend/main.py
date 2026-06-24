@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException, Query
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime
+import time
 import math
 import sys
 import os
@@ -17,14 +19,45 @@ import engine_bridge
 
 app = FastAPI(title="Softlend Backend API")
 
-# Helper for consistent error JSON responses
+
+# ==========================
+# Request Logging Middleware 
+# ==========================
+@app.middleware("http")
+async def log_requests(request, call_next):
+    start = time.time()
+    response = await call_next(request)
+    duration = round((time.time() - start) * 1000, 2)
+    print(
+        f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] "
+        f"{request.method} "
+        f"{request.url.path} "
+        f"{response.status_code} "
+        f"{duration}ms"
+    )
+    return response
+
+
+# ==========================
+# Consistent Error Responses (PDF Compliant)
+# ==========================
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=exc.detail
+    )
+
 def raise_error(status_code: int, detail: str, code: str):
     raise HTTPException(
         status_code=status_code,
         detail={"error": detail, "code": code}
     )
 
+
+# ==========================
 # Create DB tables on startup
+# ==========================
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
@@ -275,7 +308,7 @@ def list_offers(customer_id: int, locked: Optional[str] = Query(None), db: Sessi
 
 
 # ==========================
-# 8. UPDATE OFFER STATUS
+# 8. UPDATE OFFER STATUS 
 # ==========================
 @app.patch("/offers/{offer_id}/status", status_code=200)
 def update_offer_status(offer_id: int, status_data: dict, db: Session = Depends(get_db)):
@@ -289,13 +322,31 @@ def update_offer_status(offer_id: int, status_data: dict, db: Session = Depends(
     
     # Validate transition path
     if offer.status == OfferStatusEnum.PENDING and new_status_str != "active":
-        raise_error(422, "Pending offers can only transition to active", "INVALID_STATUS_TRANSITION")
+        raise_error(
+            422,
+            "Pending offers can only transition to active",
+            "INVALID_STATUS_TRANSITION"
+        )
+    
     if offer.status == OfferStatusEnum.ACTIVE and new_status_str != "disbursed":
-        raise_error(422, "Active offers can only transition to disbursed", "INVALID_STATUS_TRANSITION")
+        raise_error(
+            422,
+            "Active offers can only transition to disbursed",
+            "INVALID_STATUS_TRANSITION"
+        )
+    
+    # Disbursed offers cannot change status
+    if offer.status == OfferStatusEnum.DISBURSED:
+        raise_error(
+            422,
+            "Disbursed offers cannot change status",
+            "INVALID_STATUS_TRANSITION"
+        )
     
     # Check if offer is still locked before activation
     if new_status_str == "active":
         customer = db.query(Customer).filter(Customer.id == offer.customer_id).first()
+        
         if customer.cibil_score is None or customer.cibil_score < offer.min_score_required:
             raise_error(
                 422,
