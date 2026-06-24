@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "softlend-api-bible",
+		"_postman_id": "softlend-api-bible-final",
 		"name": "Softlend API - Complete (Success & Failure)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -32,7 +32,33 @@
 			}
 		},
 		{
-			"name": "3. Update Credit Score (Success)",
+			"name": "3. Create Customer (Failure - Validation Mobile)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Ravi\", \"mobile\": \"123\", \"pan\": \"ABCDE1234F\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers", "host": ["{{base_url}}"], "path": ["customers"]}
+			}
+		},
+		{
+			"name": "4. Create Customer (Failure - Validation PAN)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Ravi\", \"mobile\": \"9876543210\", \"pan\": \"INVALID\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers", "host": ["{{base_url}}"], "path": ["customers"]}
+			}
+		},
+		{
+			"name": "5. Update Credit Score (Success)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -45,7 +71,7 @@
 			}
 		},
 		{
-			"name": "4. Update Credit Score (Failure - Customer Not Found)",
+			"name": "6. Update Credit Score (Failure - Customer Not Found)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -58,7 +84,7 @@
 			}
 		},
 		{
-			"name": "5. Add Credit Gap (Success)",
+			"name": "7. Add Credit Gap (Success)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -71,7 +97,7 @@
 			}
 		},
 		{
-			"name": "6. Add Credit Gap (Failure - Customer Not Found)",
+			"name": "8. Add Credit Gap (Failure - Customer Not Found)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -84,7 +110,7 @@
 			}
 		},
 		{
-			"name": "7. Resolve Gap (Success)",
+			"name": "9. Resolve Gap (Success)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -92,7 +118,7 @@
 			}
 		},
 		{
-			"name": "8. Resolve Gap (Failure - Gap Not Found)",
+			"name": "10. Resolve Gap (Failure - Gap Not Found)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -100,7 +126,7 @@
 			}
 		},
 		{
-			"name": "9. Get Credit Profile (Success)",
+			"name": "11. Get Credit Profile (Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -108,7 +134,7 @@
 			}
 		},
 		{
-			"name": "10. Get Credit Profile (Failure - Customer Not Found)",
+			"name": "12. Get Credit Profile (Failure - Customer Not Found)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -116,7 +142,7 @@
 			}
 		},
 		{
-			"name": "11. Create Offer (Success)",
+			"name": "13. Create Offer HDFC (Locked)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -129,7 +155,20 @@
 			}
 		},
 		{
-			"name": "12. Create Offer (Failure - Customer Not Found)",
+			"name": "14. Create Offer Bajaj (Unlocked)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"lender\": \"Bajaj Finserv\", \"amount\": 300000, \"interest_rate\": 13.0, \"tenure_months\": 24, \"min_score_required\": 620}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/customers/1/offers", "host": ["{{base_url}}"], "path": ["customers", "1", "offers"]}
+			}
+		},
+		{
+			"name": "15. Create Offer (Failure - Customer Not Found)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -142,7 +181,7 @@
 			}
 		},
 		{
-			"name": "13. List Offers (Success)",
+			"name": "16. List Offers (No Filter)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -150,7 +189,23 @@
 			}
 		},
 		{
-			"name": "14. List Offers (Failure - Customer Not Found)",
+			"name": "17. List Offers (Filter - Locked Only)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/1/offers?locked=true", "host": ["{{base_url}}"], "path": ["customers", "1", "offers"]}
+			}
+		},
+		{
+			"name": "18. List Offers (Filter - Unlocked Only)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{base_url}}/customers/1/offers?locked=false", "host": ["{{base_url}}"], "path": ["customers", "1", "offers"]}
+			}
+		},
+		{
+			"name": "19. List Offers (Failure - Customer Not Found)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -158,7 +213,7 @@
 			}
 		},
 		{
-			"name": "15. Calculate EMI (Success)",
+			"name": "20. Calculate EMI (Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -166,7 +221,7 @@
 			}
 		},
 		{
-			"name": "16. Calculate EMI (Failure - Offer Not Found)",
+			"name": "21. Calculate EMI (Failure - Offer Not Found)",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -174,7 +229,7 @@
 			}
 		},
 		{
-			"name": "17. Update Offer Status (Success - Bajaj)",
+			"name": "22. Update Offer Status (Success - Activate Bajaj)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -187,7 +242,7 @@
 			}
 		},
 		{
-			"name": "18. Update Offer Status (Failure - Locked HDFC)",
+			"name": "23. Update Offer Status (Failure - Locked HDFC)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -200,7 +255,7 @@
 			}
 		},
 		{
-			"name": "19. Update Offer Status (Failure - Invalid Transition)",
+			"name": "24. Update Offer Status (Success - Disburse Bajaj)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -213,7 +268,20 @@
 			}
 		},
 		{
-			"name": "20. Get Improvement Summary (Bonus - Success)",
+			"name": "25. Update Offer Status (Failure - Re-Activate Disbursed)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\": \"active\"}",
+					"options": {"raw": {"language": "json"}}
+				},
+				"url": {"raw": "{{base_url}}/offers/2/status", "host": ["{{base_url}}"], "path": ["offers", "2", "status"]}
+			}
+		},
+		{
+			"name": "26. Get Improvement Summary (Bonus - Success)",
 			"request": {
 				"method": "GET",
 				"header": [],
