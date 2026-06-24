@@ -9,7 +9,5 @@ Run the rule engine tests:
 
 Run the backend:
 1. cd backend
-2. python -m venv venv
-3. activate venv and pip install -r requirements.txt
-4. python run_migration.py
-5. uvicorn main:app --reload
+2. python run_migration.py
+3. uvicorn main:app --reload
